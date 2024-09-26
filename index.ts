@@ -1,4 +1,5 @@
 type Pizza = {
+	id: number;
 	name: string;
 	price: number;
 };
@@ -6,18 +7,19 @@ type Pizza = {
 type Order = {
 	id: number;
 	pizza: Pizza;
-	status: string; //"ordered" | "completed";
+	status: "ordered" | "completed";
 };
-const menu = [
-	{ name: "Margherita", price: 8 },
-	{ name: "Pepperoni", price: 10 },
-	{ name: "Hawaiian", price: 10 },
-	{ name: "Veggie", price: 9 },
+
+const menu: Pizza[] = [
+	{ id: 1, name: "Margherita", price: 8 },
+	{ id: 2, name: "Pepperoni", price: 10 },
+	{ id: 3, name: "Hawaiian", price: 10 },
+	{ id: 4, name: "Veggie", price: 9 },
 ];
 
 let cashInRegister = 100;
 let nextOrderId = 1;
-const orderQueue: Array<Order> = [];
+const orderQueue: Order[] = [];
 
 function addNewPizza(pizzaObj: Pizza) {
 	menu.push(pizzaObj);
@@ -30,7 +32,7 @@ function placeOrder(pizzaName: string) {
 		return;
 	}
 	cashInRegister += selectedPizza.price;
-	const newOrder = {
+	const newOrder: Order = {
 		id: nextOrderId++,
 		pizza: selectedPizza,
 		status: "ordered",
@@ -49,12 +51,30 @@ function completeOrder(orderId) {
 	return order;
 }
 
-addNewPizza({ name: "Chicken Bacon Ranch", price: 12 });
-addNewPizza({ name: "BBQ Chicken", price: 12 });
-addNewPizza({ name: "Spicy sausage", price: 11 });
+export function getPizzaDetail(identifier: string | number) {
+	if (typeof identifier === "string") {
+		return menu.find(
+			(pizza) => pizza.name.toLowerCase() === identifier.toLowerCase()
+		);
+	} else if (typeof identifier === "number") {
+		return menu.find((pizza) => pizza.id === identifier);
+	} else {
+		throw new TypeError(
+			"Parameter `identifier` must be either a string or a number"
+		);
+	}
+}
 
-placeOrder("Chicken Chicken Ranch");
-completeOrder("1");
+addNewPizza({ id: 5, name: "Chicken Bacon Ranch", price: 12 });
+addNewPizza({ id: 6, name: "BBQ Chicken", price: 12 });
+addNewPizza({ id: 7, name: "Spicy sausage", price: 11 });
+
+placeOrder("Chicken Bacon Ranch");
+placeOrder("Pepperoni");
+completeOrder(1);
+placeOrder("Anchovy");
+placeOrder("Veggie");
+completeOrder(2);
 
 console.log("Menu", menu);
 console.log("Cash in register", cashInRegister);
