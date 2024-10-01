@@ -6,8 +6,6 @@ type User = {
   role: UserRole;
 };
 
-type UpdatedUser = Partial<User>;
-
 let nextUserId = 1;
 
 const users: User[] = [
@@ -24,23 +22,23 @@ function fetchUserDetails(username: string) {
   return user;
 }
 
-function updateUser(id: any, updates: UpdatedUser) {
+function updateUser(id: number, newUser: User) {
   const foundUser = users.find(user => user.id === id);
   if (!foundUser) {
     console.error('User not found');
     return;
   }
 
-  Object.assign(foundUser, updates);
+  Object.assign(foundUser, newUser);
 }
 
-function addNewUser(newUser: Omit<User, 'id'>): User {
-  const user: User = {
+function addNewUser(user: Omit<User, 'id'>): User {
+  const newUser: User = {
     id: nextUserId++,
-    ...newUser,
+    ...user,
   };
-  users.push(user);
-  return user;
+  users.push(newUser);
+  return newUser;
 }
 
 addNewUser({ username: 'nina_richi', role: 'member' });
