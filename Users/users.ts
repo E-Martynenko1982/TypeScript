@@ -2,22 +2,22 @@ type UserRole = 'guest' | 'member' | 'admin';
 
 type User = {
   id: number;
-  username: string;
+  userName: string;
   role: UserRole;
 };
 
 let nextUserId = 1;
 
 const users: User[] = [
-  { id: nextUserId++, username: 'john_doe', role: 'member' },
-  { id: nextUserId++, username: 'jane_doe', role: 'admin' },
-  { id: nextUserId++, username: 'guest_doe', role: 'guest' },
+  { id: nextUserId++, userName: 'john_doe', role: 'member' },
+  { id: nextUserId++, userName: 'jane_doe', role: 'admin' },
+  { id: nextUserId++, userName: 'guest_doe', role: 'guest' },
 ];
 
-function fetchUserDetails(username: string) {
-  const user = users.find(user => user.username === username);
+function fetchUserDetails(userName: string) {
+  const user = users.find(user => user.userName === userName);
   if (!user) {
-    throw new Error(`User with username ${username} not found`);
+    throw new Error(`User with userName ${userName} not found`);
   }
   return user;
 }
@@ -41,5 +41,5 @@ function addNewUser(user: Omit<User, 'id'>): User {
   return newUser;
 }
 
-addNewUser({ username: 'nina_richi', role: 'member' });
+addNewUser({ userName: 'nina_richi', role: 'member' });
 console.log(users);
